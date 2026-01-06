@@ -1,0 +1,29 @@
+{
+  "name": "source-movement",
+  "version": "1.0.0",
+  "description": "Web-based Quake 3 CPM movement framework",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "server": "tsx server/index.ts",
+    "dev:all": "concurrently \"npm run dev\" \"npm run server\""
+  },
+  "dependencies": {
+    "three": "^0.170.0",
+    "@geckos.io/client": "^3.0.2",
+    "@geckos.io/server": "^3.0.2",
+    "@geckos.io/snapshot-interpolation": "^1.1.1",
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vite": "^6.0.0",
+    "@types/three": "^0.170.0",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "concurrently": "^9.0.0"
+  }
+}

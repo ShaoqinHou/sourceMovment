@@ -1,0 +1,14 @@
+ i want to make a web based movement framework, where inspried by source movement(done't matter which one, its just
+  that type of mevement bhop, farjump etc) you should research online as the source code of many source/doom/quake
+  title are out online, but focuse on one so u dont get confused. since i said its a framework, i want the abality to
+  customize the  movement, it should expose relvant params and make sure use same unit system as the game ur
+  referenced from and document these paras and their value( also include the based on value and name as a reference
+  for furture).  and i also want the abality to save different preset of these value so i can compare different para
+  value,u should also include at least the preset of the based on game, make sure swaping preset is just simple key
+  press and applys on the fly. i don't u to have a complexed palyground but at least it should be detailed enough for
+  me to feel the speed aka not just a flat ground. it should have consol as well,   also command to enable display of
+  important movmenet data so we know if the code is correct and if im doing strafing , farjump etc,  oh, rmember the
+  scene should have area for me test out each unique source movment tric, like far jumb etc... make sure u do a good
+  reseach before starting, not just the game, but also on what lib etc to use for it,   at the end , after i host it,
+  other people should be joining the multiplayer session
+
