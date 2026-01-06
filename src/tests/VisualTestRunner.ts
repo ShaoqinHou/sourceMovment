@@ -87,7 +87,7 @@ export class VisualTestRunner {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          background: rgba(0, 0, 0, 0.9);
+          background: rgba(0, 0, 0, 0.95);
           border: 2px solid #00ff88;
           border-radius: 8px;
           padding: 20px;
@@ -95,15 +95,35 @@ export class VisualTestRunner {
           font-family: 'Consolas', monospace;
           font-size: 14px;
           z-index: 1000;
-          pointer-events: none;
           display: none;
-          min-width: 400px;
+          min-width: 450px;
+          max-width: 90vw;
+          max-height: 90vh;
+          overflow-y: auto;
         }
         #test-overlay.visible {
           display: block;
         }
+        #test-overlay .close-btn {
+          position: absolute;
+          top: 10px;
+          right: 15px;
+          background: none;
+          border: none;
+          color: #888;
+          font-size: 24px;
+          cursor: pointer;
+          padding: 0;
+          width: 30px;
+          height: 30px;
+          line-height: 30px;
+        }
+        #test-overlay .close-btn:hover {
+          color: #ff4444;
+        }
         #test-overlay h2 {
           margin: 0 0 10px 0;
+          padding-right: 35px;
           color: #00ff88;
           font-size: 18px;
         }
@@ -131,6 +151,7 @@ export class VisualTestRunner {
         #test-overlay .results {
           max-height: 300px;
           overflow-y: auto;
+          margin-bottom: 10px;
         }
         #test-overlay .result-item {
           display: flex;
@@ -171,6 +192,7 @@ export class VisualTestRunner {
           color: #666;
         }
       </style>
+      <button class="close-btn" id="test-close">&times;</button>
       <h2 id="test-name">Test Name</h2>
       <div class="description" id="test-desc">Description</div>
       <div class="instructions" id="test-instructions">Instructions</div>
@@ -182,10 +204,18 @@ export class VisualTestRunner {
       <div class="results" id="test-results"></div>
       <div class="summary" id="test-summary"></div>
       <div class="controls">
-        F6: Next test | F7: Previous test | F8: Pause/Resume
+        F5: Close | F6: Next test | F7: Previous test | F8: Pause/Resume
       </div>
     `;
     document.body.appendChild(overlay);
+
+    // Add close button handler
+    const closeBtn = document.getElementById('test-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        this.hideOverlay();
+      });
+    }
   }
 
   /**
@@ -410,6 +440,22 @@ export class VisualTestRunner {
     this.isPaused = !this.isPaused;
     document.getElementById('test-status')!.textContent =
       this.isPaused ? 'PAUSED' : 'Running...';
+  }
+
+  /**
+   * Hide the overlay (keep test state, just hide UI)
+   */
+  hideOverlay(): void {
+    const overlay = document.getElementById(this.OVERLAY_ID);
+    if (overlay) overlay.classList.remove('visible');
+  }
+
+  /**
+   * Show the overlay
+   */
+  showOverlay(): void {
+    const overlay = document.getElementById(this.OVERLAY_ID);
+    if (overlay) overlay.classList.add('visible');
   }
 
   /**

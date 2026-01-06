@@ -173,22 +173,25 @@ export class Game {
       }
     });
 
-    // Test mode: Start test (F5)
+    // Test mode: Start test (F5) - also closes overlay
     this.input.setOnTestStart(() => {
       if (!this.visualTestRunner.isTestRunning()) {
         this.visualTestRunner.startTest(0); // Start first test
       } else {
-        this.visualTestRunner.stop(); // Toggle off
+        // Test running or finished - just hide overlay
+        this.visualTestRunner.hideOverlay();
       }
     });
 
-    // Test mode: Next test (F6) - always works when test mode is active
+    // Test mode: Next test (F6) - always works, shows overlay if hidden
     this.input.setOnTestNext(() => {
+      this.visualTestRunner.showOverlay();
       this.visualTestRunner.nextTest();
     });
 
-    // Test mode: Previous test (F7) - always works when test mode is active
+    // Test mode: Previous test (F7) - always works, shows overlay if hidden
     this.input.setOnTestPrev(() => {
+      this.visualTestRunner.showOverlay();
       this.visualTestRunner.prevTest();
     });
 
