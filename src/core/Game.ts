@@ -26,6 +26,7 @@ export class Game {
   // HUD elements
   private hudSpeed: HTMLElement | null;
   private hudPosition: HTMLElement | null;
+  private hudAngles: HTMLElement | null;
   private hudState: HTMLElement | null;
   private presetName: HTMLElement | null;
   private overlay: HTMLElement | null;
@@ -47,6 +48,8 @@ export class Game {
   private dbgAddspeed: HTMLElement | null;
   private dbgAccelspeed: HTMLElement | null;
   private dbgAiraccel: HTMLElement | null;
+  private dbgYaw: HTMLElement | null;
+  private dbgPitch: HTMLElement | null;
   private dbgStrafeonly: HTMLElement | null;
   private dbgAircontrol: HTMLElement | null;
 
@@ -90,6 +93,7 @@ export class Game {
     // Get HUD elements
     this.hudSpeed = document.getElementById('hud-speed');
     this.hudPosition = document.getElementById('hud-position');
+    this.hudAngles = document.getElementById('hud-angles');
     this.hudState = document.getElementById('hud-state');
     this.presetName = document.getElementById('preset-name');
     this.overlay = document.getElementById('overlay');
@@ -110,6 +114,8 @@ export class Game {
     this.dbgAddspeed = document.getElementById('dbg-addspeed');
     this.dbgAccelspeed = document.getElementById('dbg-accelspeed');
     this.dbgAiraccel = document.getElementById('dbg-airaccel');
+    this.dbgYaw = document.getElementById('dbg-yaw');
+    this.dbgPitch = document.getElementById('dbg-pitch');
     this.dbgStrafeonly = document.getElementById('dbg-strafeonly');
     this.dbgAircontrol = document.getElementById('dbg-aircontrol');
 
@@ -291,8 +297,13 @@ export class Game {
         const originalRotation = this.player.camera.quaternion.clone();
 
         this.player.camera.position.copy(testState.position);
-        // Look slightly down to see the ground
-        this.player.camera.rotation.set(-0.3, 0, 0);
+        // Use test controller's view angles (yaw, pitch)
+        this.player.camera.rotation.set(
+          testState.viewAngles.pitch,
+          testState.viewAngles.yaw,
+          0,
+          'YXZ'
+        );
 
         this.renderer.render(this.map.scene, this.player.camera);
 
@@ -353,6 +364,13 @@ export class Game {
     if (this.hudPosition) {
       const pos = state.position;
       this.hudPosition.textContent = `X: ${Math.round(pos.x)} Y: ${Math.round(pos.y)} Z: ${Math.round(pos.z)}`;
+    }
+
+    // Camera angles display
+    if (this.hudAngles) {
+      const yawDeg = (state.viewAngles.yaw * 180 / Math.PI).toFixed(0);
+      const pitchDeg = (state.viewAngles.pitch * 180 / Math.PI).toFixed(0);
+      this.hudAngles.textContent = `Yaw: ${yawDeg}° Pitch: ${pitchDeg}°`;
     }
 
     // Ground/Air state
@@ -421,6 +439,17 @@ export class Game {
     update(this.dbgAddspeed, debug.addSpeed);
     update(this.dbgAccelspeed, debug.accelSpeed);
     update(this.dbgAiraccel, debug.airAccel);
+
+    // Camera section - get from state (not debugInfo)
+    const state = this.player.getState();
+    if (this.dbgYaw) {
+      const yawDeg = (state.viewAngles.yaw * 180 / Math.PI).toFixed(0);
+      this.dbgYaw.textContent = `${yawDeg}°`;
+    }
+    if (this.dbgPitch) {
+      const pitchDeg = (state.viewAngles.pitch * 180 / Math.PI).toFixed(0);
+      this.dbgPitch.textContent = `${pitchDeg}°`;
+    }
 
     // CPM section
     update(this.dbgStrafeonly, debug.isStrafingOnly);

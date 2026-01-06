@@ -100,6 +100,12 @@
       color: #888;
     }
 
+    #hud .angles {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #888;
+    }
+
     #hud .state {
       margin-top: 4px;
       font-size: 12px;
@@ -248,6 +254,7 @@
       <div class="speed-label">SPEED</div>
       <div class="speed" id="hud-speed">0</div>
       <div class="position" id="hud-position">X: 0 Y: 0 Z: 0</div>
+      <div class="angles" id="hud-angles">Yaw: 0° Pitch: 0°</div>
       <div class="state ground" id="hud-state">GROUND</div>
     </div>
 
@@ -269,6 +276,9 @@
       <div class="row"><span class="label">AddSpeed:</span><span class="value" id="dbg-addspeed">0</span></div>
       <div class="row"><span class="label">AccelSpeed:</span><span class="value" id="dbg-accelspeed">0</span></div>
       <div class="row"><span class="label">AirAccel:</span><span class="value" id="dbg-airaccel">1</span></div>
+      <div class="section">CAMERA</div>
+      <div class="row"><span class="label">Yaw:</span><span class="value" id="dbg-yaw">0°</span></div>
+      <div class="row"><span class="label">Pitch:</span><span class="value" id="dbg-pitch">0°</span></div>
       <div class="section">CPM</div>
       <div class="row"><span class="label">StrafeOnly:</span><span class="value" id="dbg-strafeonly">0</span></div>
       <div class="row"><span class="label">AirControl:</span><span class="value" id="dbg-aircontrol">0</span></div>
