@@ -47,7 +47,9 @@ export class Game {
   private dbgCurrentspeed: HTMLElement | null;
   private dbgAddspeed: HTMLElement | null;
   private dbgAccelspeed: HTMLElement | null;
-  private dbgAiraccel: HTMLElement | null;
+  private dbgState: HTMLElement | null;
+  private dbgAccmode: HTMLElement | null;
+  private dbgAccval: HTMLElement | null;
   private dbgYaw: HTMLElement | null;
   private dbgPitch: HTMLElement | null;
   private dbgStrafeonly: HTMLElement | null;
@@ -113,7 +115,9 @@ export class Game {
     this.dbgCurrentspeed = document.getElementById('dbg-currentspeed');
     this.dbgAddspeed = document.getElementById('dbg-addspeed');
     this.dbgAccelspeed = document.getElementById('dbg-accelspeed');
-    this.dbgAiraccel = document.getElementById('dbg-airaccel');
+    this.dbgState = document.getElementById('dbg-state');
+    this.dbgAccmode = document.getElementById('dbg-accmode');
+    this.dbgAccval = document.getElementById('dbg-accval');
     this.dbgYaw = document.getElementById('dbg-yaw');
     this.dbgPitch = document.getElementById('dbg-pitch');
     this.dbgStrafeonly = document.getElementById('dbg-strafeonly');
@@ -441,10 +445,40 @@ export class Game {
     update(this.dbgCurrentspeed, debug.currentSpeed);
     update(this.dbgAddspeed, debug.addSpeed);
     update(this.dbgAccelspeed, debug.accelSpeed);
-    update(this.dbgAiraccel, debug.airAccel);
+
+    // Movement State section
+    const state = this.player.getState();
+    if (this.dbgState) {
+      if (state.isOnLadder) {
+        this.dbgState.textContent = 'LADDER';
+        this.dbgState.style.color = '#ff8800';
+      } else if (state.isOnSlope) {
+        this.dbgState.textContent = 'SURF';
+        this.dbgState.style.color = '#00aaff';
+      } else if (state.isGrounded) {
+        this.dbgState.textContent = 'GROUND';
+        this.dbgState.style.color = '#00ff88';
+      } else {
+        this.dbgState.textContent = 'AIR';
+        this.dbgState.style.color = '#ff8800';
+      }
+    }
+    if (this.dbgAccmode) {
+      const accel = debug.airAccel;
+      if (accel === 10) {
+        this.dbgAccmode.textContent = 'Ground';
+        this.dbgAccmode.style.color = '#00ff88';
+      } else if (accel === 100) {
+        this.dbgAccmode.textContent = 'Strafe';
+        this.dbgAccmode.style.color = '#ffaa00';
+      } else {
+        this.dbgAccmode.textContent = 'Air';
+        this.dbgAccmode.style.color = '#aaa';
+      }
+    }
+    update(this.dbgAccval, debug.airAccel, 0);
 
     // Camera section - get from state (not debugInfo)
-    const state = this.player.getState();
     if (this.dbgYaw) {
       const yawDeg = (state.viewAngles.yaw * 180 / Math.PI).toFixed(0);
       this.dbgYaw.textContent = `${yawDeg}°`;
@@ -454,7 +488,7 @@ export class Game {
       this.dbgPitch.textContent = `${pitchDeg}°`;
     }
 
-    // CPM section
+    // CPM Mechanics section
     update(this.dbgStrafeonly, debug.isStrafingOnly);
     update(this.dbgAircontrol, debug.airControlActive);
   }
