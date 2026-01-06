@@ -507,7 +507,6 @@ export const TEST_DEFINITIONS: TestDefinition[] = [
       return -3 * Math.PI / 4; // Face South-West for diagonal
     },
     check: (ctx) => {
-      const finalSpeed = ctx.controller.getHorizontalSpeed();
       const state = ctx.controller.getState();
       const startPos = ctx.startPosition;
       const endPos = state.position;
@@ -520,8 +519,8 @@ export const TEST_DEFINITIONS: TestDefinition[] = [
       // Check camera actually turned during test!
       const initialYaw = 0; // We set this in setup
       const finalYaw = state.viewAngles.yaw;
-      const yawChange = Math.abs(finalYaw - initialYaw);
-      // Normalize yaw difference to be in [0, PI]
+      let yawChange = finalYaw - initialYaw; // Use signed difference for normalization
+      // Normalize yaw difference to be in [-PI, PI]
       while (yawChange > Math.PI) yawChange -= 2 * Math.PI;
       while (yawChange < -Math.PI) yawChange += 2 * Math.PI;
       const yawChangeDegrees = Math.abs(yawChange) * 180 / Math.PI;
