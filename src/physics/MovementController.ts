@@ -539,21 +539,22 @@ export class MovementController {
       this.state.velocity.addScaledVector(wishDir, accelSpeed);
     }
 
-    // Calculate angle between velocity and wishdir (for debugging)
+    // Update debug info (always update, even when no acceleration)
+    this.debugInfo.currentSpeed = currentSpeed;
+    this.debugInfo.addSpeed = addSpeed;
+    this.debugInfo.accelSpeed = accelSpeed;
+
+    // Calculate angle between FINAL velocity and wishdir (after acceleration)
     const actualSpeed = this.getHorizontalSpeed();
     if (actualSpeed > 0.1) {
-      // cos(angle) = currentSpeed / actualSpeed
-      const cosAngle = Math.max(-1, Math.min(1, currentSpeed / actualSpeed));
+      // Calculate final currentSpeed (dot product with NEW velocity)
+      const finalCurrentSpeed = this.state.velocity.dot(wishDir);
+      const cosAngle = Math.max(-1, Math.min(1, finalCurrentSpeed / actualSpeed));
       const angleRad = Math.acos(cosAngle);
       this.debugInfo.velWishAngle = angleRad * 180 / Math.PI;
     } else {
       this.debugInfo.velWishAngle = 0;
     }
-
-    // Update debug info (always update, even when no acceleration)
-    this.debugInfo.currentSpeed = currentSpeed;
-    this.debugInfo.addSpeed = addSpeed;
-    this.debugInfo.accelSpeed = accelSpeed;
   }
 
   /**
