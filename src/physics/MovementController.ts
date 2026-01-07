@@ -94,6 +94,7 @@ export class MovementController {
     addSpeed: 0,      // wishspeed - currentspeed
     accelSpeed: 0,    // actual acceleration applied
     airAccel: 1,
+    velWishAngle: 0,  // angle between velocity and wishdir (degrees)
     // CPM
     isStrafingOnly: false,
     airControlActive: false,
@@ -536,6 +537,17 @@ export class MovementController {
 
       // Add acceleration in wish direction
       this.state.velocity.addScaledVector(wishDir, accelSpeed);
+    }
+
+    // Calculate angle between velocity and wishdir (for debugging)
+    const actualSpeed = this.getHorizontalSpeed();
+    if (actualSpeed > 0.1) {
+      // cos(angle) = currentSpeed / actualSpeed
+      const cosAngle = Math.max(-1, Math.min(1, currentSpeed / actualSpeed));
+      const angleRad = Math.acos(cosAngle);
+      this.debugInfo.velWishAngle = angleRad * 180 / Math.PI;
+    } else {
+      this.debugInfo.velWishAngle = 0;
     }
 
     // Update debug info (always update, even when no acceleration)

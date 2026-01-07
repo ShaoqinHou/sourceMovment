@@ -47,6 +47,7 @@ export class Game {
   private dbgCurrentspeed: HTMLElement | null;
   private dbgAddspeed: HTMLElement | null;
   private dbgAccelspeed: HTMLElement | null;
+  private dbgVelWishAngle: HTMLElement | null;
   private dbgState: HTMLElement | null;
   private dbgAccmode: HTMLElement | null;
   private dbgAccval: HTMLElement | null;
@@ -115,6 +116,7 @@ export class Game {
     this.dbgCurrentspeed = document.getElementById('dbg-currentspeed');
     this.dbgAddspeed = document.getElementById('dbg-addspeed');
     this.dbgAccelspeed = document.getElementById('dbg-accelspeed');
+    this.dbgVelWishAngle = document.getElementById('dbg-velwishangle');
     this.dbgState = document.getElementById('dbg-state');
     this.dbgAccmode = document.getElementById('dbg-accmode');
     this.dbgAccval = document.getElementById('dbg-accval');
@@ -445,6 +447,7 @@ export class Game {
     update(this.dbgCurrentspeed, debug.currentSpeed);
     update(this.dbgAddspeed, debug.addSpeed);
     update(this.dbgAccelspeed, debug.accelSpeed);
+    update(this.dbgVelWishAngle, debug.velWishAngle.toFixed(1) + '°');
 
     // Movement State section
     const state = this.player.getState();
